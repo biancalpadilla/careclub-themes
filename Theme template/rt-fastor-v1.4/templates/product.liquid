@@ -1,0 +1,232 @@
+{%- assign current_variant = product.selected_or_first_available_variant | default:product.variants.first -%}
+{%- assign featured_image = current_variant.featured_image | default:product.featured_image -%}
+<div class="col-md-12 center-column content-without-background">
+  <div itemscope itemtype="http://schema.org/Product">
+    <span itemprop="name" class="hidden">{{product.title}}</span>
+    <div class="product-info">
+      <div class="row">
+        {%- if settings.sb_product_placement == 'left' -%}
+        <div class="col-md-3 col-sm-12{% if settings.sb_product_mobile %} hidden-sm hidden-xs{% endif %}">
+          {%- include 'sidebar-product' -%}
+        </div>
+        {%- endif -%}
+        <div class="{% if settings.sb_product_placement != '' %}col-md-9{% else %}col-md-12{% endif %} col-sm-12">
+          <div class="row" id="quickview_product">
+            {%- assign image_grid = 7 -%}
+            {%- assign product_center_grid = 5 -%}
+            {%- if settings.product_image_size == '1' -%}
+            {%- assign image_grid = 4 -%}
+            {%- assign product_center_grid = 8 -%}
+            {%- elsif settings.product_image_size == '3' -%}
+            {%- assign image_grid = 8 -%}
+            {%- assign product_center_grid = 4 -%}
+            {%- endif -%}
+            {%- assign product_img_size = settings.product_img_size | default:'grande' -%}
+            <div class="col-sm-{{image_grid}} popup-gallery">
+              <div class="row">
+                {%- if product.images.size > 1 -%}
+                {%- if settings.product_image_zoom != '2' -%}
+                {%- if settings.product_position_image_additional == '2' -%}
+                <div class="col-sm-2">
+                  <div class="thumbnails thumbnails-left clearfix">
+                    <ul>
+                      {%- for image in product.images -%}
+                      <li><p><a href="{{image.src | img_url:'master'}}" class="popup-image" data-image="{{image.src | img_url:product_img_size}}" data-zoom-image="{{image.src | img_url:'master'}}"><img src="{{image.src | img_url:'small'}}" title="{% if image.alt contains 'iframe' %}{{product.title | escape}}{% else %}{{image.alt | escape}}{% endif %}" alt="{% if image.alt contains 'iframe' %}{{product.title | escape}}{% else %}{{image.alt | escape}}{% endif %}" /></a></p></li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                </div>
+                {%- endif -%}
+                {%- endif -%}
+                {%- endif -%}
+                <div class="col-sm-{%- if product.images.size > 1 and settings.product_position_image_additional == '2' -%}10{%- else -%}12{%- endif -%}">
+                  <div class="product-image{% if settings.product_image_zoom != '2' %}{% if settings.product_image_zoom == '1' %} inner-cloud-zoom{% else %} cloud-zoom{% endif %}{% endif %}">
+                    {%- if current_variant.compare_at_price > current_variant.price and settings.product_sale_badge != '' -%}
+                    <div class="sale">
+                      {%- if settings.product_sale_badge == '0' -%}
+                      {{'products.product.sale' | t}}
+                      {%- else -%}
+                      -{{current_variant.compare_at_price | minus:current_variant.price | times:100.0 | divided_by:current_variant.compare_at_price | money_without_currency | times:100 | remove:'.0'}}%
+                      {%- endif -%}
+                    </div>
+                    {%- elsif settings.product_new_badge and product.tags contains 'latest' -%}
+                    <div class="new">{{'products.product.new' | t}}</div>
+                    {%- endif -%}
+                    <a href="{{featured_image | img_url:'master'}}" title="{{product.title | escape}}" id="ex1" class="{%- if settings.product_image_zoom == '2' -%}popup-image{%- else -%}open-popup-image{%- endif -%}"><img src="{{featured_image | img_url:product_img_size}}" title="{{product.title | escape}}" alt="{{product.title | escape}}" id="image" class="main-image" itemprop="image" data-zoom-image="{{featured_image | img_url:'master'}}" /></a>
+                  </div>
+                </div>
+                {%- if product.images.size > 1 -%}
+                {%- if settings.product_image_zoom != '2' -%}
+                {%- if settings.product_position_image_additional != '2' -%}
+                <div class="col-sm-12">
+                  <div class="overflow-thumbnails-carousel clearfix">
+                    <div class="thumbnails-carousel owl-carousel">
+                      {%- assign product_thumb_size = 'small' -%}
+                      {%- if settings.product_image_size == '3' -%}{%- assign product_thumb_size = 'medium' -%}{%- endif -%}
+                      {%- if settings.product_image_size == '2' and settings.sb_product_placement == '' -%}{%- assign product_thumb_size = 'medium' -%}{%- endif -%}
+                      {%- for image in product.images -%}
+                      <div class="item"><a href="{{image.src | img_url:'master'}}" class="popup-image" data-image="{{image.src | img_url:product_img_size}}" data-zoom-image="{{image.src | img_url:'master'}}"><img src="{{image.src | img_url:product_thumb_size}}" title="{% if image.alt contains 'iframe' %}{{product.title | escape}}{% else %}{{image.alt | escape}}{% endif %}" alt="{% if image.alt contains 'iframe' %}{{product.title | escape}}{% else %}{{image.alt | escape}}{% endif %}" /></a></div>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </div>
+                {%- endif -%}
+                {%- endif -%}
+                {%- endif -%}
+              </div>
+            </div>
+            <div class="col-sm-{{image_grid}} phantom-gallery">
+              <div class="flexslider">
+                <ul class="slides">
+                  {%- assign product_img_size = settings.product_img_size | default:'grande' -%}
+                  {%- for image in product.images -%}
+                  <li data-url="{{image.src | img_url:'master'}}">
+                    <img src="{{image.src | img_url:product_img_size}}" alt="{% if image.alt contains 'iframe' %}{{product.title | escape}}{% else %}{{image.alt | escape}}{% endif %}" />
+                  </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+            <div class="col-sm-{{product_center_grid}} product-center product clearfix">
+              <div itemprop="offerDetails" itemscope itemtype="http://schema.org/Offer">
+                <h2 class="name hidden"><a href="{{product.url | within: collection}}">{{product.title}}</a></h2>
+                <div class="review">
+                  <a class="smoothscroll" href="#product-reviews-a">
+                    <span class="shopify-product-reviews-badge" data-id="{{product.id}}"></span>
+                  </a>
+                  {%- if settings.product_social_share -%}
+                  <div class="share">
+                    <div class="addthis_toolbox addthis_default_style"><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> <a class="addthis_button_tweet"></a> <a class="addthis_button_pinterest_pinit"></a> <a class="addthis_counter addthis_pill_style"></a></div>
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-515eeaf54693130e"></script> 
+                  </div>
+                  {%- endif -%}
+                </div>
+                <div class="description">
+                  <p><span>{{'products.product.vendor' | t}}</span> <strong>{{product.vendor | link_to_vendor}}</strong></p>
+                  <p id="product_sku"{% if current_variant.sku == blank %} class="hide"{% endif %}><span>{{'products.product.sku' | t}}</span> <strong>{% if current_variant.sku %}{{current_variant.sku}}{% endif %}</strong></p>
+                  <p id="product_stock" data-instock="{{'products.product.in_stock' | t | escape}}" data-outstock="{{'products.product.out_of_stock' | t | escape}}"><span>{{'products.product.stock' | t}}</span> <strong>{% if current_variant.available  %}{{'products.product.in_stock' | t}}{% else %}{{'products.product.out_of_stock' | t}}{% endif %}</strong></p>
+                </div>
+                <div class="price">
+                  {%- include 'limited-offer' -%}
+                  <div id="price">
+                    {%- if product.available -%}
+                    <span class="price-new money">{{current_variant.price | money}}</span>
+                    {%- if current_variant.compare_at_price > current_variant.price -%}
+                    <span class="price-old money">{{current_variant.compare_at_price | money}}</span>
+                    {%- endif -%}
+                    {%- else -%}
+                    <span class="price-old">{{'products.product.sold_out' | t}}</span>
+                    {%- endif -%}
+                  </div>
+                </div>
+                <div id="product">
+                  {%- if product.available -%}
+                  <form class="product-form" id="product-form" action="/cart/add" method="post" enctype="multipart/form-data" data-product-id="{{product.id}}">
+                    <div class="options{% if product.variants.size <= 1 %} none{% endif %}">
+                      <div class="options2">
+                        {%- if product.variants.size > 1 -%}
+                        <h2>{{'products.product.available_options' | t}}</h2>
+                        {%- endif -%}
+                        <div id="product-variants">
+                          <select id="product-select" name="id" class="hidden">
+                            {%- for variant in product.variants -%}
+                            {%- if variant.available -%}
+                            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{variant.id}}">{{variant.title}} - {{variant.price | money_with_currency}}</option>
+                            {%- else -%}
+                            <option disabled="disabled">
+                              {{variant.title}} - {{'products.product.sold_out' | t}}
+                            </option>
+                            {%- endif -%}
+                            {%- endfor -%}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="cart">
+                      <div class="add_to_cart clearfix">
+                        <p>{{'products.product.quantity' | t}}</p>
+                        <div class="quantity">
+                          <input type="text" name="quantity" id="quantity_wanted" size="2" value="1" />
+                          <a href="javascript:void(0);" id="q_up"><i class="fa fa-plus"></i></a>
+                          <a href="javascript:void(0);" id="q_down"><i class="fa fa-minus"></i></a>
+                        </div>
+                        <input type="submit" value="{{'products.product.add_to_cart' | t | escape}}" id="button-cart"  class="button not-empty add-to-cart" data-loading-text="{{'products.product.loading' | t | escape}}" data-addtocart="{{'products.product.add_to_cart' | t | escape}}" data-unavailable="{{'products.product.unavailable' | t | escape}}" data-soldout="{{'products.product.sold_out' | t | escape}}" />
+                        <div class="clearfix"></div>
+                        {%- if settings.product_question -%}
+                        <a href="javascript:void(0);" class="button btn-default button-product-question"><img src="{{'icon-ask.png' | asset_url}}" class="icon-enquiry" alt="{{'products.product.ask_about_this_product' | t | escape}}" />{{'products.product.ask_about_this_product' | t}}</a>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  </form>
+                  {%- if settings.wishlist_enable or settings.product_size_chart -%}
+                  <div class="links clearfix">
+                    {%- if settings.wishlist_enable -%}
+                    <div class="link">
+                      {%- include 'wishlist-item' -%}
+                    </div>
+                    {%- endif -%}
+                    {%- if settings.product_size_chart and settings.product_size_chart_page != '' -%}
+                    <div class="link">
+                      <a class="button-product-sizechart" href="{{pages[settings.product_size_chart_page].url}}">{{'products.product.size_chart' | t}}</a>
+                    </div>
+                    {%- endif -%}
+                  </div>
+                  {%- endif -%}
+                  {%- else -%}
+                  <div class="cart">
+                    <div class="add_to_cart clearfix">
+                      <p>{{'products.product.quantity' | t}}</p>
+                      <div class="quantity">
+                        <input type="text" name="quantity" id="quantity_wanted" size="2" value="1" />
+                        <a href="javascript:void(0);" id="q_up"><i class="fa fa-plus"></i></a>
+                        <a href="javascript:void(0);" id="q_down"><i class="fa fa-minus"></i></a>
+                      </div>
+                      <input type="button" value="{{'products.product.add_to_cart' | t | escape}}" id="button-cart" data-loading-text="{{'products.product.loading' | t | escape}}" class="button" />
+                      <div class="clearfix"></div>
+                      <a href="javascript:void(0);" class="button btn-default button-product-question"><img src="{{'icon-ask.png' | asset_url}}" align="left" class="icon-enquiry" alt="{{'products.product.ask_about_this_product' | t | escape}}" />{{'products.product.ask_about_this_product' | t}}</a>
+                    </div>
+                  </div>
+                  {%- if settings.wishlist_enable or settings.product_size_chart -%}
+                  <div class="links clearfix">
+                    {%- if settings.wishlist_enable -%}
+                    <div class="link">
+                      {%- include 'wishlist-item' -%}
+                    </div>
+                    {%- endif -%}
+                    {%- if settings.product_size_chart and settings.product_size_chart_page != '' -%}
+                    <div class="link">
+                      <a class="button-product-sizechart" href="{{pages[settings.product_size_chart_page].url}}">{{'products.product.size_chart' | t}}</a>
+                    </div>
+                    {%- endif -%}
+                  </div>
+                  {%- endif -%}
+                  {%- endif -%}
+                </div>
+                {%- include 'product-question' -%}
+                {%- include 'product-sizechart' -%}
+              </div>
+            </div>
+          </div>
+        </div>
+        {%- if settings.sb_product_placement == 'right' -%}
+        <div class="col-md-3 col-sm-12{% if settings.sb_product_mobile %} hidden-sm hidden-xs{% endif %}">
+          {%- include 'sidebar-product' -%}
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+    <div id="tabs" class="htabs">
+      <a href="#tab-description" class="selected">{{'products.product.description' | t}}</a>
+      <a href="#tab-review" class="">{{'products.product.customer_reviews' | t}}</a>
+      {%- if product.featured_image.alt contains 'iframe' -%}
+      <a href="#tab-video">{{'products.product.video' | t}}</a>
+      {%- endif -%}
+    </div>
+    <div id="tab-description" class="tab-content" itemprop="description">{{product.description}}</div>
+    <div id="tab-review" class="tab-content"><div id="shopify-product-reviews" data-id="{{product.id}}">{{product.metafields.spr.reviews}}</div></div>
+    {%- if product.featured_image.alt contains 'iframe' -%}
+    <div id="tab-video" class="tab-content">{{product.featured_image.alt}}</div>
+    {%- endif -%}
+  </div>
+</div>
+<script>window.products.id{{product.id}} = {{product | json}};</script>

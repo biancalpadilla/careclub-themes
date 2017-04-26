@@ -1,0 +1,10 @@
+.header-type-7 #top .pattern > .container{padding-top:15px}
+@media (max-width: 767px) {
+  .header-type-7 #top .pattern > .container{padding-top:5px}
+}
+.megamenu-type-32 ul.megamenu > li > a{height:51px}
+.megamenu-type-32 .megamenuToogle-wrapper .megamenuToogle-pattern > .container{padding-bottom:10px!important}
+#home-slider{margin-top:30px}
+.box-with-products .clear:before, .box-with-products .clear:after, .product-grid .product:before, .product-list > div:before, .product-list .name-actions:before, .product-list .desc:before, .center-column .product-grid:before, .center-column .product-grid:after, .product-grid > .row:before, .category-info:before, .refine_search_overflow:after, .tab-content:before, .tab-content:after, .product-filter .list-options .limit:before, .product-filter .list-options .sort:before, .product-filter .options .product-compare:before, .is-countdown .countdown-section:after {
+  background: rgba(255, 255, 255, 0.1);
+}

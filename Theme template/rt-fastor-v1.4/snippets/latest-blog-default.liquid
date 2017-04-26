@@ -1,0 +1,28 @@
+<div class="box blog-module blog-latest-posts box-no-advanced{%- if _lblog_mobile == false -%}{{' '}}hidden-xs hidden-sm{%- endif -%}" data-order="{{_lblog_order}}">
+  <div class="box-heading">{{_lblog_heading}}</div>
+  <div class="strip-line"></div>
+  <div class="box-content box-latest-posts">
+    <ul class="blog-list-default">
+      {%- for _article in _lblog_blog.articles -%}
+      {%- if forloop.index > _lblog_limit -%}
+      {%- break -%}
+      {%- endif -%}
+      <li>
+        <div class="media">
+          <a href="{{_article.url}}">
+            <div class="thumb-holder">
+              <a href="{{_article.url}}">
+                <img alt="{{_article.title}}" src="{{_article.image.src | img_url: 'large' }}" />
+              </a>
+            </div>
+            <div class="media-body">
+              <div class="date-published">{{ _article.published_at | date: "%b %d, %y" }}</div>
+              <h5>{{_article.title}}</h5>
+            </div>
+          </a>
+        </div>
+      </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>

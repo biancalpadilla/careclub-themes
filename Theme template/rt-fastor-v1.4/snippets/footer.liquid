@@ -1,0 +1,152 @@
+{%- capture footer_class -%}{%- if settings.footer_layout == '1' -%}{{'full-width'}}{%- elsif settings.footer_layout == '4' -%}{{'fixed2 fixed3'}}{%- elsif settings.footer_layout == '3' -%}{{'fixed2'}}{%- else -%}{{'fixed'}}{%- endif -%}{%- endcapture -%}
+<div id="footer" class="footer {{footer_class}}">
+  <div class="background-footer"></div>
+  <div class="background">
+    <div class="shadow"></div>
+    <div class="pattern">
+      <div class="container">
+        {%- assign list_hooks = "footer_about_hook|footer_banner_hook|footer_html_hook|footer_html2_hook|footer_product_hook|footer_info1_hook|footer_info2_hook|footer_linklist1_hook|footer_linklist2_hook|footer_linklist3_hook|footer_linklist4_hook|footer_linklist5_hook|footer_linklist6_hook|footer_newsletter_hook|footer_social_hook" | split: "|" | uniq -%}
+        {%- comment -%}{{' '}}Footer Top {%- endcomment -%}
+        {%- if settings.footer_section_top_layout != '' -%}
+        {%- assign str_hooks = "" -%}
+        {%- assign hook_size = list_hooks.size | minus:1 -%}
+        {%- for i in (0..hook_size) -%}
+        {%- if settings[list_hooks[i]] == 'top' -%}
+        {%- assign str_hooks = str_hooks | append:list_hooks[i] | append:"|" -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {%- assign new_hooks = str_hooks | split:"|" -%}
+        {%- if new_hooks.size > 0 -%}
+        {%- assign hook_size = new_hooks.size | minus:1 -%}
+        {%- for i in (0..hook_size) -%}
+        {%- assign i_plus = i | plus:1 -%}
+        {%- for j in (i_plus..hook_size) -%}
+        {%- assign pos_current_name = new_hooks[i] | replace:'_hook','_order' -%}
+        {%- assign pos_next_name = new_hooks[j] | replace:'_hook','_order' -%}
+        {%- assign pos_current = settings[pos_current_name] | plus:0 -%}
+        {%- assign pos_next = settings[pos_next_name] | plus:0 -%}
+        {%- if pos_next < pos_current -%}
+        {%- assign hook_old = new_hooks[j] | prepend:"|" -%}
+        {%- assign hook_new = new_hooks[j] | append:"|" | append:new_hooks[i] -%}
+        {%- assign str_hooks = str_hooks | remove:hook_old | replace:new_hooks[i],hook_new -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {%- endfor -%}
+        {%- assign new_hooks = str_hooks | split:"|" -%}
+        <div class="row">
+          <div class="col-sm-12">
+            {%- for i in (1..new_hooks.size) -%}
+            {%- assign j = i | minus:1 -%}
+            {%- assign snippet_name = new_hooks[j] | remove:'_hook' | replace:'_', '-' -%}
+            {%- include snippet_name -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
+        {%- endif -%}
+        {%- comment -%}{{' '}}Footer Center {%- endcomment -%}
+        {%- if settings.footer_section_column_layout != '' -%}
+        {%- assign column_grid_version = settings.footer_section_column_layout | split: '_' -%}
+        {%- assign column_version = '' -%}
+        {%- if column_grid_version.size > 1 -%}{%- assign column_version = column_grid_version.last -%}{%- endif -%}
+        {%- assign column_grid = settings.footer_section_column_layout | remove: '_2' | split: '-' -%}
+        <div class="row">
+          {%- for i_grid in (1..column_grid.size) -%}
+          {%- assign j_grid = i_grid | minus:1 -%}
+          <div class="col-sm-{{column_grid[j_grid]}}">
+            {%- assign str_hooks = "" -%}
+            {%- assign hook_size = list_hooks.size | minus:1 -%}
+            {%- for i in (0..hook_size) -%}
+            {%- assign column_name = 'column_' | append:i_grid -%}
+            {%- if settings[list_hooks[i]] == column_name -%}
+            {%- assign str_hooks = str_hooks | append:list_hooks[i] | append:"|" -%}
+            {%- endif -%}
+            {%- endfor -%}
+            {%- assign new_hooks = str_hooks | split:"|" -%}
+            {%- if new_hooks.size > 0 -%}
+            {%- assign hook_size = new_hooks.size | minus:1 -%}
+            {%- for i in (0..hook_size) -%}
+            {%- assign i_plus = i | plus:1 -%}
+            {%- for j in (i_plus..hook_size) -%}
+            {%- assign pos_current_name = new_hooks[i] | replace:'_hook','_order' -%}
+            {%- assign pos_next_name = new_hooks[j] | replace:'_hook','_order' -%}
+            {%- assign pos_current = settings[pos_current_name] | plus:0 -%}
+            {%- assign pos_next = settings[pos_next_name] | plus:0 -%}
+            {%- if pos_next < pos_current -%}
+            {%- assign hook_old = new_hooks[j] | prepend:"|" -%}
+            {%- assign hook_new = new_hooks[j] | append:"|" | append:new_hooks[i] -%}
+            {%- assign str_hooks = str_hooks | remove:hook_old | replace:new_hooks[i],hook_new -%}
+            {%- endif -%}
+            {%- endfor -%}
+            {%- endfor -%}
+            {%- assign new_hooks = str_hooks | split:"|" -%}
+            {%- for i in (1..new_hooks.size) -%}
+            {%- assign j = i | minus:1 -%}
+            {%- assign snippet_name = new_hooks[j] | remove:'_hook' | replace:'_', '-' -%}
+            {%- include snippet_name with column_version -%}
+            {%- endfor -%}
+            {%- endif -%}
+          </div>
+          {%- endfor -%}
+        </div>
+        {%- endif -%}
+        {%- comment -%}{{' '}}Footer Bottom {%- endcomment -%}
+        {%- if settings.footer_section_bottom_layout != '' -%}
+        {%- assign str_hooks = "" -%}
+        {%- assign hook_size = list_hooks.size | minus:1 -%}
+        {%- for i in (0..hook_size) -%}
+        {%- if settings[list_hooks[i]] == 'bottom' -%}
+        {%- assign str_hooks = str_hooks | append:list_hooks[i] | append:"|" -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {%- assign new_hooks = str_hooks | split:"|" -%}
+        {%- if new_hooks.size > 0 -%}
+        {%- assign hook_size = new_hooks.size | minus:1 -%}
+        {%- for i in (0..hook_size) -%}
+        {%- assign i_plus = i | plus:1 -%}
+        {%- for j in (i_plus..hook_size) -%}
+        {%- assign pos_current_name = new_hooks[i] | replace:'_hook','_order' -%}
+        {%- assign pos_next_name = new_hooks[j] | replace:'_hook','_order' -%}
+        {%- assign pos_current = settings[pos_current_name] | plus:0 -%}
+        {%- assign pos_next = settings[pos_next_name] | plus:0 -%}
+        {%- if pos_next < pos_current -%}
+        {%- assign hook_old = new_hooks[j] | prepend:"|" -%}
+        {%- assign hook_new = new_hooks[j] | append:"|" | append:new_hooks[i] -%}
+        {%- assign str_hooks = str_hooks | remove:hook_old | replace:new_hooks[i],hook_new -%}
+        {%- endif -%}
+        {%- endfor -%}
+        {%- endfor -%}
+        {%- assign new_hooks = str_hooks | split:"|" -%}
+        <div class="row">
+          <div class="col-sm-12">
+            {%- for i in (1..new_hooks.size) -%}
+            {%- assign j = i | minus:1 -%}
+            {%- assign snippet_name = new_hooks[j] | remove:'_hook' | replace:'_', '-' -%}
+            {%- include snippet_name -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
+        {%- endif -%}
+        {%- comment -%}{{' '}}Copyright {%- endcomment -%}
+        {%- if settings.copyright_align != '' -%}
+        <div class="copyright row">
+          {%- capture copyright_custom -%}Copyright &copy; {{'now' | date: '%Y'}} {{shop.name}}. All Rights Reserved.{%- endcapture -%}
+          {%- case settings.footer_social_hook -%}
+          {%- when 'cp_bottom' -%}
+          <div class="text-{{settings.copyright_align}}">{{settings.copyright_custom | default:copyright_custom}}{%- include 'footer-social' -%}</div>
+          {%- when 'cp_left' -%}
+          <div class="col-sm-6 text-left">{%- include 'footer-social' -%}</div>
+          <div class="col-sm-6 text-right">{{settings.copyright_custom | default:copyright_custom}}</div>
+          {%- when 'cp_right' -%}
+          <div class="col-sm-6 text-left">{{settings.copyright_custom | default:copyright_custom}}</div>
+          <div class="col-sm-6 text-right">{%- include 'footer-social' -%}</div>
+          {%- else -%}
+          <div class="col-sm-12 text-{{settings.copyright_align}}">{{settings.copyright_custom | default:copyright_custom}}</div>
+          {%- endcase -%}
+        </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>

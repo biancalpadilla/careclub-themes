@@ -1,0 +1,105 @@
+{%- assign _class = 3 -%}
+{%- assign _all = 4 -%}
+{%- assign _id = i | append: j | append: k -%}
+
+{%- if _acm_limit == 6 -%}
+{%- assign _class = 2 -%}
+{%- assign _all = 6 -%}
+{%- endif -%}
+
+{%- if _acm_limit == 5 -%}
+{%- assign _class = 25 -%}
+{%- assign _all = 5 -%}
+{%- endif -%}
+
+{%- if _acm_limit == 3 -%}
+{%- assign _class = 4 -%}
+{%- assign _all = 3 -%}
+{%- endif -%}
+
+{%- if _acm_limit == 2 -%}
+{%- assign _class = 6 -%}
+{%- assign _all = 2 -%}
+{%- endif -%}
+
+{%- if _acm_limit == 1 -%}
+{%- assign _class = 12 -%}
+{%- assign _all = 1 -%}
+{%- endif -%}
+
+<div class="matrialarts-products-tabs">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="description">{{_acm_text}}</div>
+      <ul id="matrialtab{{_id}}" class="select-tab">
+        {%- for _item in  _acm_items -%}
+        {%- if _item.type == 'collection_link' -%}
+        <li{%- if forloop.index0 == 0 -%}{{' '}}class="active"{%- endif -%}>
+          <a href="#matrialartstabs-{{_id}}-{{forloop.index0}}">{{_item.title}}</a>
+        </li>
+        {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="col-sm-9">
+      <div class="tab-content clearfix">
+        {%- for _item in _acm_items -%}
+        {%- if _item.type == 'collection_link' -%}
+        <div class="tab-pane{%- if forloop.index0 == 0 -%}{{' '}}active{%- endif -%}" id="matrialartstabs-{{_id}}">
+          <div class="box clearfix box-with-products without-heading">
+            <div class="box-content products">
+              <div class="box-product">
+                <div id="myCarousel{{_id}}">
+                  <!-- Carousel items -->
+                  <div class="carousel-inner">
+                    {%- assign _i = 0 -%}
+                    {%- assign _row_fluid = 0 -%}
+                    {%- assign _item = 0 -%}
+
+                    {%- for product in _item.object.products limit: _acm_limit -%}{{' '}}
+                    {%- assign _row_fluid = _row_fluid | plus: 1 -%}
+                    {%- if _i == 0 -%}
+                    {%- assign _item = _item | plus: 1 -%}
+                    <div class="active item">
+                      <div class="product-grid">
+                        <div class="row">
+                          {%- endif -%}
+							
+                          {%- assign _r = _row_fluid | divided_by: _all -%}
+                          {%- assign _r = _r | times: _all -%}
+                          {%- assign _r = _row_fluid | minus: _r -%}
+                          
+                          {%- if _row_fluid > _all and _r == 1 -%}{{' '}}
+                        </div>
+                        <div class="row">
+                        {%- endif -%}
+                        <div class="col-sm-{{_class}}{%- if _class != 12 -%}{{' '}}col-xs-6{%- endif -%}{%- if _class == 2 -%}{{' '}}col-md-25 col-lg-2 col-sm-3{%- endif -%}{%- if _class == 2 and _r == 0 -%}{{' '}}hidden-md hidden-sm{%- endif -%}{%- if _class == 2 and _r == 5 -%}{{' '}}hidden-sm{%- endif -%}{%- if _class == 25 -%}{{' '}}col-md-25 col-lg-25 col-sm-3{%- endif -%}{%- if _class == 25 and _r == 0 -%}{{' '}}hidden-sm{%- endif -%}">
+                          {%- include 'product-item' -%}
+                        </div>
+                        {%- assign _i = _i | plus: 1 -%}
+                        {%- endfor -%}
+                        {%- if _i > 0 -%}
+                        </div>
+                      </div>
+                    </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>     
+</div>
+
+<script type="text/javascript">
+  $('#matrialtab{{_id}} a').click(function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  })
+</script>

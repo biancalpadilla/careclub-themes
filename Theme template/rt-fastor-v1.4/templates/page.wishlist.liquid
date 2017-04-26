@@ -1,0 +1,104 @@
+{%- if settings.sb_account_placement == 'left' -%}
+<div class="col-md-3{% if settings.sb_account_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-myaccount' -%}
+</div>
+{%- endif -%}
+<div id="content" class="{% if settings.sb_account_placement != '' %}col-md-9{% else %}col-md-12{% endif %} center-column body-other">
+  {%- if customer -%}
+  {%- if page.content != blank -%}
+  <div class="page_content">
+    {{page.content}}
+  </div>
+  {%- endif -%}
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <td class="text-center">{{'wishlist.general.image' | t}}</td>
+        <td class="text-left">{{'wishlist.general.item' | t}}</td>
+        <td class="text-right">{{'wishlist.general.price' | t}}</td>
+        <td class="text-right">{{'wishlist.general.action' | t}}</td>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for tag in customer.tags -%}
+        {%- assign the_test = '' -%}
+        {%- capture tagID -%}{{ tag }}{%- endcapture -%}
+        {%- for tag in customer.tags -%}
+          {%- capture curTag -%}{{ tag }}{%- endcapture -%}
+          {%- if curTag contains tagID -%}
+            {%- assign tagID_tmp = tagID.size | minus:curTag.size -%}
+            {%- if tagID_tmp == 0 -%}
+              {%- assign the_test = tagID -%}
+            {%- else -%}
+              {%- assign the_test = '' -%}
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- for collection in collections -%}
+          {%- paginate collection.products by collection.all_products_count -%}
+          {%- for product in collection.products -%}
+            {%- capture productID -%}{{ product.id }}{%- endcapture -%}
+            {%- unless used contains productID -%}
+              {%- assign check = tag.size | minus:productID.size | modulo:2 -%}
+              {%- if check == 0 -%}{%- assign display_product = true -%}{%- else -%}{%- assign display_product = false -%}{%- endif -%}
+              {%- if display_product and the_test contains productID -%}
+
+              {%- assign variant_tmp = product.selected_or_first_available_variant  -%}
+              {%- for variant in product.variants -%}
+                {%- if variant.available == true and variant.price < variant_tmp.price -%}
+                  {%- assign variant_tmp = variant -%}	
+                {%- endif -%}
+              {%- endfor -%}
+              <tr>
+                <td class="text-center">
+                  <a href="{{product.url | within: collection}}">
+                    <img src="{{product.featured_image | product_img_url:'small'}}" alt="{{product.title | escape}}" />
+                  </a>
+                </td>
+                <td class="text-left">
+                  <a href="{{product.url | within: collection}}">{{product.title}}{% if product.variants.size > 1 %} - {{variant_tmp.title}}{% endif %}</a>
+                </td>
+                <td class="text-right">
+                  <div class="price"><span class="money">{{product.price | money}}</span></div>
+                </td>
+                <td class="text-right">
+                  {%- if product.available -%}
+                  <form action="/cart/add" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="quantity" value="1" />
+                    <input type="hidden" name="id" value="{{variant_tmp.id}}" />
+                    <button type="submit" class="btn btn-primary btooltip" title="{{'wishlist.general.add' | t | escape}}"><i class="fa fa-shopping-cart"></i></button>
+                  </form>
+                  {%- else -%}
+                  <a href="{{product.url | within: collection}}" class="btn btn-primary btooltip" title="{{'wishlist.general.view' | t | escape}}"><i class="fa fa-shopping-cart"></i></a>
+                  {%- endif -%}
+                  
+                  {%- form 'customer' -%}	
+                  <input type='hidden' name='contact[email]' value='{{customer.email}}'/>
+                  <input type='hidden' name='contact[tags]' id='remove-value' value='x{{tagID}}' />
+                  <button type="submit" class="btn btn-default btooltip" title="{{'wishlist.general.remove' | t | escape}}"><i class="fa fa-times"></i></button>
+                  {%- endform -%}
+                </td>
+              </tr>
+              {%- capture used -%}{{ productID }} {{ used }}{%- endcapture -%}
+              {%- endif -%}
+            {%- endunless -%}
+          {%- endfor -%}
+          {%- endpaginate -%}
+        {%- endfor -%}
+      {%- endfor -%}
+    </tbody>
+  </table>
+  <div class="buttons clearfix">
+    <div class="pull-left"><a href="{{shop.url}}" class="btn btn-default">{{'wishlist.general.back' | t}}</a></div>
+    <div class="pull-right"><a href="/account" class="btn btn-primary">{{'wishlist.general.continue' | t}}</a></div>
+  </div>
+  {%- else -%}
+  <p>{{'wishlist.general.to_create_a_wishlist_please' | t}} <a href='/account/login'>{{'wishlist.general.login' | t}}</a> {{'wishlist.general.or' | t}} <a href='/account/register'>{{'wishlist.general.register' | t}}</a>.</p>
+  {%- endif -%}
+</div>
+{%- if settings.sb_account_placement == 'right' -%}
+<div class="col-md-3{% if settings.sb_account_mobile %} hidden-sm hidden-xs{% endif %}">
+  {%- include 'sidebar-myaccount' -%}
+</div>
+{%- endif -%}

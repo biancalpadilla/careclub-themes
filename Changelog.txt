@@ -1,0 +1,20 @@
+
+*** Version 1.0 October 11, 2016
+	- Initial release
+*** Version 1.1 November 10, 2016
+	- 7 skins added
+	- New feature added: Mobile Toolbar
+	- New feature added: Sticky Header/Menu
+	- New feature added: Lookbook Support
+	- Bugs fixed & improvements
+*** Version 1.2 December 02, 2016
+	- 5 skins added
+	- New feature added: Product Video
+	- Bugs fixed & improvements
+*** Version 1.3 January 03, 2017 
+    	- 5 skins added
+    	- New feature: Vertical Header
+    	- Bugs fixed & Improvements
+*** Version 1.4 January 23, 2017 
+    	- 5 skins added
+    	- Bugs fixed & Improvements

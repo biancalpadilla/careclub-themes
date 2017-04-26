@@ -1,0 +1,17 @@
+{%- if settings.limited_offer and product.compare_at_price > product.price -%}
+{%- for i in (1..10) -%}
+{%- assign my_offer = 'limited_offer_' | append: i -%}
+{%- assign my_product = 'limited_offer_' | append: i | append: '_product' -%}
+{%- assign my_expire = 'limited_offer_' | append: i | append: '_expire' -%}
+{%- assign my_date = settings[my_expire] | split: '-' -%}
+{%- if settings[my_offer] and settings[my_product] != '' and settings[my_product] != '' and product.handle == settings[my_product] and my_date.size == 3 -%}
+<div class="count_holder_item">
+  {%- if settings.limited_offer_heading != '' -%}
+  <h3>{{settings.limited_offer_heading}}</h3>
+  {%- endif -%}
+  <div class="countdown_{{product.id}} countdown" data-year="{{my_date[2]}}" data-month="{{my_date[0]}}" data-day="{{my_date[1]}}"></div>
+</div>
+{%- break -%}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}

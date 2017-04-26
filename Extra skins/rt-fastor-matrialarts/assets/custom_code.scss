@@ -1,0 +1,44 @@
+.matrialarts-newsletter .content{padding-bottom:20px}
+.matrialarts-contact{display:inline-block;vertical-align:top;padding:13px 60px 0 0;position:relative;height:45px;margin-top:24px;text-align:left}
+.matrialarts-contact:before{content:'';position:absolute;display:block;top:-30px;bottom:-30px;width:1px;background:rgba(255,255,255,.05);left:-61px}
+.matrialarts-contact .heading{display:inline-block;vertical-align:top;font-size:10px;line-height:1;text-transform:uppercase;padding:0 7px 0 0}
+.matrialarts-contact p{display:inline-block;vertical-align:top;padding:0;margin:0;font-size:20px;color:#fff;line-height:1}
+.matrialarts-menu ul{list-style:none;padding:9px 0 10px!important;margin:0!important}
+.matrialarts-menu li{margin:0!important;float:left;clear:both}
+.matrialarts-products{padding-bottom:10px}
+.matrialarts-products .matrial-product{border:1px solid #e5e5e5;margin:16px 7px 10px 20px;display:inline-block;vertical-align:top}
+.matrialarts-products .matrial-product .image{display:inline-block;vertical-align:top}
+.matrialarts-products .matrial-product .image img{display:inline-block;vertical-align:top}
+.matrialarts-products .matrial-product .right{display:inline-block;vertical-align:top;padding:25px 20px 0 30px}
+.matrialarts-products .matrial-product .right .price{color:#d9121f;font-size:14px;font-weight:600}
+.matrialarts-products .button-right{vertical-align:top;display:inline-block;margin-top:16px;margin-bottom:10px}
+.matrialarts-products .button-right .button{border-radius:0;-webkit-border-radius:0;-moz-border-radius:0;width:94px;height:97px;margin:0 0 0 20px;padding:33px 20px 0 29px}
+.welcome-matrialarts{text-align:center;font-size:15px;padding:35px 0 0}
+.welcome-matrialarts .heading{font-size:30px;line-height:1.2;color:#fff}
+.welcome-matrialarts p{padding:5px 0 0;margin:0}
+.columns-matrialarts{padding-top:10px}
+.columns-matrialarts > div{text-align:center;margin-top:30px}
+.columns-matrialarts > div:before{position:absolute;top:11px;bottom:0;left:0;content:'';width:1px;background:rgba(255,255,255,.1)}
+.columns-matrialarts > div:first-child:before{display:none}
+.columns-matrialarts p{padding:12px 0 2px;margin:0;font-size:18px;color:#fff;line-height:1}
+.matrialarts-newsletter{padding:0 0 60px}
+.matrialarts-newsletter .heading p{padding:59px 0 0;margin:0;font-size:30px;line-height:1;color:#fff}
+.matrialarts-newsletter .content p{padding:10px 0 0;margin:0;font-size:15px}
+.matrialarts-newsletter .inputs input{margin:14px 7px 0 0;height:45px;vertical-align:top;width:210px;padding-left:30px}
+.matrialarts-newsletter .inputs .button{margin:14px 0 0;height:45px;vertical-align:top;border-radius:30px;-webkit-border-radius:30px;-moz-border-radius:30px}
+.matrialarts-products-tabs .description{padding-left:15px;font-size:14px;line-height:18px;padding-top:28px}
+.matrialarts-products-tabs .select-tab{padding:23px 0 35px 15px;margin:0;list-style:none;font-size:20px;line-height:1}
+.matrialarts-products-tabs .select-tab li{padding-top:5px}
+.matrialarts-products-tabs .select-tab li a{border-bottom:2px solid transparent;display:inline-block;padding:3px 0}
+.matrialarts-products-tabs .select-tab li.active a{color:#fff;border-bottom:2px solid #c30a0a}
+.matrialarts-products-tabs .select-tab li.active a:before{display:inline-block;vertical-align:middle;font-family:FontAwesome;cursor:pointer;font-size:9px;line-height:9px;font-weight:400;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;content:"\f054";color:#fff;margin-right:12px;margin-bottom:2px}
+.matrialarts-products-tabs .tab-content{background:none!important}
+.matrialarts-products-tabs .tab-content:before{display:none!important}
+@media (min-width: 767px) {
+  .matrialarts-menu a{font-size:14px;line-height:40px}
+}
+.footer-blocks-bottom .footer-block .caption{line-height:1.5}
+
+@media (max-width: 991px) {
+  #home-slider .slide-body {height:350px;}
+}

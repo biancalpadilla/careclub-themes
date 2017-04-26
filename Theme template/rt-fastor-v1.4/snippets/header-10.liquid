@@ -1,0 +1,61 @@
+<header class="header-type-3 header-type-10">
+  <div class="background-header"></div>
+  <div class="slider-header">
+    <!-- Top of pages -->
+    <div id="top" class="{%- if settings.header_layout == '1' -%}full-width{%- elsif settings.header_layout == '4' -%}fixed3 fixed2{%- elsif settings.header_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+      <div class="background-top"></div>
+      <div class="background">
+        <div class="shadow"></div>
+        <div class="pattern">
+          <div class="container">
+            <div class="row">
+              <!-- Header Left -->
+              <div class="col-sm-4" id="header-left" style="min-width:{{settings.logo_min_width | plus:0}}px">		
+                <!-- Logo -->
+                <div class="logo">
+                  <a href="{{shop.url}}" title="{{ shop.name | escape }}">
+                    <img src="{{ 'logo.png' | asset_url }}" title="{{ shop.name | escape }}" alt="{{ shop.name | escape }}" />
+                  </a>
+                </div>
+              </div>
+              <!-- Header Center -->
+              <div class="col-sm-4 orderable" id="header-center">	
+                <!-- Menu -->
+                {%- if settings.pos_menu_use -%}
+                {%- include 'pos-menu' -%}
+                {%- else -%}
+                {%- include 'categories-menu' -%}
+                {%- endif -%}
+              </div>
+              <!-- Header Right -->
+              <div class="col-sm-4 orderable" id="header-right">
+                {%- include 'pos-top-block' -%}
+                <!-- Currency -->
+                {%- if settings.show_multiple_currencies -%}
+                {%- include 'currencies-switcher' -%}
+                {%- endif -%}
+                {%- include 'cartblock' with 'header' -%}
+                {%- if shop.customer_accounts_enabled -%}
+                <a href="/account" class="my-account"><i class="fa fa-user"></i></a>
+                {%- endif -%}
+                <!-- Search -->
+                <a href="/search" class="search_form"><i class="fa fa-search"></i></a>
+              </div>
+            </div>
+          </div>
+          {%- include 'pos-menu2' -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Slider -->
+  <div id="slider" class="{%- if settings.slideshow_layout == '1' -%}full-width{%- elsif settings.slideshow_layout == '4' -%}fixed3 fixed2{%- elsif settings.slideshow_layout == '3' -%}fixed2{%- else -%}fixed{%- endif -%}">
+    <div class="background-slider"></div>
+    <div class="background">
+      <div class="shadow"></div>
+      <div class="pattern orderable">
+        {%- include 'pos-slideshow' -%}
+      </div>
+    </div>
+  </div>
+</header>

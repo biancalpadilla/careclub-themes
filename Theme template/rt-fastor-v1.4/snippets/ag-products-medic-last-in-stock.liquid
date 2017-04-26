@@ -1,0 +1,104 @@
+<div class="box box-with-products box-no-advanced">
+  <div class="box-heading">
+    {{_acm_title}}
+  </div>
+  <div class="strip-line"></div>
+  <div class="clear"></div>
+  <div class="box-content products">
+    <div class="clearfix" style="clear: both">
+      <div class="medic-last-in-stock">
+
+        {%- assign _i = 0 -%}
+        {%- for _item in _acm_items -%}
+        {%- if _item.type == 'product_link' -%}
+
+        {%- if _i == _acm_limit -%}
+        {%- break -%}
+        {%- endif -%}
+
+        {%- assign _product = _item.object -%}
+
+        {%- assign current_variant = _product.selected_or_first_available_variant | default: _product.variants.first -%}
+        {%- assign featured_image = current_variant.featured_image | default:_product.featured_image -%}
+
+        <div class="product clearfix row">
+          <div class="image col-sm-6 col-md-7 col-lg-8">
+            <a href="{{_product.url}}">
+              {%- if settings.product_lazy_loading_image -%}
+              <img src="{{'blank.gif' | asset_url}}" data-echo="{{featured_image | product_img_url:_acm_url_imgdim}}" alt="{{product.title | escape}}" />
+              {%- else -%}
+              <img src="{{featured_image | product_img_url: _acm_url_imgdim}}" alt="{{_product.title | escape}}" />
+              {%- endif -%}
+            </a>
+          </div>
+          <div class="right col-sm-6 col-md-5 col-lg-4">
+            {%- if settings.limited_offer and current_variant.compare_at_price > current_variant.price -%}
+            {%- for i in (1..10) -%}
+            {%- assign my_offer = 'limited_offer_' | append: i -%}
+            {%- assign my_product = 'limited_offer_' | append: i | append: '_product' -%}
+            {%- assign my_expire = 'limited_offer_' | append: i | append: '_expire' -%}
+            {%- assign my_date = settings[my_expire] | split: '-' -%}
+            {%- if settings[my_offer] and settings[my_product] != '' and settings[my_product] != '' and _product.handle == settings[my_product] and my_date.size == 3 -%}
+
+            {%- assign _countdown = _id | append: _i -%}
+
+            <script>
+              jQuery(document).ready(function($){
+                var current_date = new Date();
+                var offer_date = new Date({{my_date[2]}}, {{my_date[0]}} - 1, {{my_date[1]}});
+                var id = "{{_countdown}}";
+                if(current_date < offer_date){
+                  $("#countdown" + id).countdown({until: offer_date});
+                }
+                else{
+                  $("#countdown" + id).hide();
+                }
+              });
+            </script>
+            <div id="countdown{{_countdown}}" class="clearfix"></div>
+            {%- break -%}
+            {%- endif -%}
+            {%- endfor -%}
+            {%- endif -%}
+
+            <div class="name">
+              <a href="{{_product.url}}">{{_product.title}}</a>
+            </div>
+            
+            <div class="price">
+              {%- if _product.available -%}
+              {%- if current_variant.compare_at_price > current_variant.price -%}
+              <span class="money">{{current_variant.compare_at_price | money}}</span>
+              {%- else -%}
+              <span class="money">{{current_variant.price | money}}</span>
+              {%- endif -%}
+
+              {%- else -%}
+              {{'products.product.sold_out' | t}}
+              {%- endif -%}
+            </div>
+            
+            {%- if settings.product_addtocart_show and _product.available -%}
+            {%- if _product.variants.size > 1 -%}
+            <a href="{{_product.url}}" class="button" title="{{'products.product.select_options' | t | escape}}">{{'products.product.select_options' | t}}</a>
+            {%- else -%}
+            <form action="/cart/add" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="quantity" value="1" />
+              <a href="javascript:void(0);" class="add-to-cart button" title="{{'products.product.add_to_cart' | t | escape}}">{{'products.product.add_to_cart' | t}}</a>
+              <select class="hide" name="id">
+                {%- for variant in _product.variants -%}
+                <option value="{{variant.id}}">{{variant.title | escape}} - {{variant.price | money}}</option>
+                {%- endfor -%}
+              </select>
+            </form>
+            {%- endif -%}
+            {%- endif -%}
+          </div>
+        </div>
+        {%- assign _i = _i | plus: 1 -%}
+        {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
